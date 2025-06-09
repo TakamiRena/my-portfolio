@@ -6,7 +6,7 @@ type TodoItemProps = {
     isCompleted: boolean;
 }
 
-export default function TodoItem({task, isCompleted}: TodoItemProps) {
+export default function TodoItem({ task, isCompleted}: TodoItemProps) {
     return (
         <>
             <ListItem>

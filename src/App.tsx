@@ -1,12 +1,20 @@
 import "./App.css";
-import TodoItem from "./components/TodoItem";
 import TodoForm from "./components/TodoForm";
+import TodoList from "./components/TodoList";
+import type { Todo } from "./types";
 
 function App() {
+  const dummyTodos: Todo[] = [
+    { id: "1", task: "買い物", isCompleted: false },
+    { id: "2", task: "掃除", isCompleted: true },
+    { id: "3", task: "洗濯", isCompleted: false },
+  ];
+
   return (
     <>
-      <TodoItem task="歯科受診" isCompleted={false} />
+      <h1>Todoアプリ</h1>
       <TodoForm />
+      <TodoList todos={dummyTodos} />
     </>
   );
 }
