@@ -1,12 +1,8 @@
 import { Box, Checkbox, IconButton, ListItem, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import type { Todo } from "../types";
 
-type TodoItemProps = {
-  task: string;
-  isCompleted: boolean;
-};
-
-export default function TodoItem({ task, isCompleted }: TodoItemProps) {
+export default function TodoItem({ id, task, isCompleted }: Todo) {
   return (
     <>
       <ListItem
@@ -14,6 +10,7 @@ export default function TodoItem({ task, isCompleted }: TodoItemProps) {
           display: "flex",
           alignItems: "center",
           p: 1,
+          justifyContent: "space-between",
         }}
       >
         <Box
@@ -34,10 +31,10 @@ export default function TodoItem({ task, isCompleted }: TodoItemProps) {
           >
             {task}
           </Typography>
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
         </Box>
+        <IconButton aria-label="delete" size="small">
+          <DeleteIcon />
+        </IconButton>
       </ListItem>
     </>
   );

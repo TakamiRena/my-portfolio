@@ -1,4 +1,4 @@
-import { Box, List, Typography } from "@mui/material";
+import { List, Typography } from "@mui/material";
 import TodoItem from "./TodoItem";
 import type { Todo } from "../types";
 
@@ -10,17 +10,9 @@ export default function TodoList({ todos }: TodoListProps) {
   return (
     <List>
       {todos.length === 0 ? (
-        <Box>
-          <Typography>すべてのタスクが完了しました！</Typography>
-        </Box>
+        <Typography>すべてのタスクが完了しました！</Typography>
       ) : (
-        todos.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            task={todo.task}
-            isCompleted={todo.isCompleted}
-          ></TodoItem>
-        ))
+        todos.map((todo) => <TodoItem key={todo.id} {...todo}></TodoItem>)
       )}
     </List>
   );

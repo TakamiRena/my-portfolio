@@ -10,6 +10,7 @@ import {
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 import type { Todo } from "./types";
+import { useState } from "react";
 
 const theme = createTheme({
   typography: {
@@ -24,15 +25,19 @@ const theme = createTheme({
 });
 
 function App() {
-  const dummyUncompleteTodos: Todo[] = [
-    {
-      id: "1",
-      task: "買い物(tomato)",
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  const handleAddTodo = (task: string) => {
+    if (!task.trim()) return; // 空のタスクは追加しない
+
+    const newTodo: Todo = {
+      id: Date.now().toString(), // 一意のIDを生成
+      task: task,
       isCompleted: false,
-    },
-    { id: "2", task: "掃除", isCompleted: false },
-    { id: "3", task: "洗濯", isCompleted: false },
-  ];
+    };
+
+    setTodos((prevTodos) => [...prevTodos, newTodo]);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -54,7 +59,7 @@ function App() {
             mb: 2,
           }}
         >
-          <TodoForm />
+          <TodoForm onAddTodo={handleAddTodo} />
         </Box>
         <Box
           sx={{
@@ -65,7 +70,7 @@ function App() {
             mt: 2,
           }}
         >
-          <TodoList todos={dummyUncompleteTodos} />
+          <TodoList todos={todos} />
         </Box>
       </Box>
     </ThemeProvider>
