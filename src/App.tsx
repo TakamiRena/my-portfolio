@@ -1,35 +1,100 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {
+  AppBar,
+  Box,
+  createTheme,
+  CssBaseline,
+  ThemeProvider,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import TodoForm from "./components/TodoForm";
+import TodoList from "./components/TodoList";
+import type { Todo } from "./types";
+import { useState } from "react";
+
+const theme = createTheme({
+  typography: {
+    fontFamily: ["Ubuntu", '"Noto Sans JP"', "sans-serif"].join(","),
+  },
+  palette: {
+    background: {
+      default: "#e0e0e0",
+      paper: "#fff",
+    },
+  },
+});
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  const handleAddTodo = (task: string) => {
+    if (!task.trim()) return; // 空のタスクは追加しない
+
+    const newTodo: Todo = {
+      id: Date.now().toString(), // 一意のIDを生成
+      task: task,
+      isCompleted: false,
+    };
+
+    setTodos((prevTodos) => [...prevTodos, newTodo]);
+  };
+
+  const handleToggleTodo = (id: string) => {
+    setTodos((prevTodos) => {
+      return prevTodos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, isCompleted: !todo.isCompleted };
+        } else {
+          return todo;
+        }
+      });
+    });
+  };
+
+  const handleDeleteTodo = (id: string) => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <AppBar>
+        <Toolbar>
+          <Typography variant="h5" component="h1">
+            todo-list
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      {/* メインコンテナ */}
+      <Box sx={{ maxWidth: "md", m: "0 auto", p: 3, mt: 7 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            mb: 2,
+          }}
+        >
+          <TodoForm onAddTodo={handleAddTodo} />
+        </Box>
+        <Box
+          sx={{
+            bgcolor: "background.paper",
+            boxShadow: 2,
+            borderRadius: 2,
+            p: 3,
+            mt: 2,
+          }}
+        >
+          <TodoList
+            todos={todos}
+            onToggleComplete={handleToggleTodo}
+            onDelete={handleDeleteTodo}
+          />
+        </Box>
+      </Box>
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
