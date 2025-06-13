@@ -39,6 +39,22 @@ function App() {
     setTodos((prevTodos) => [...prevTodos, newTodo]);
   };
 
+  const handleToggleTodo = (id: string) => {
+    setTodos((prevTodos) => {
+      return prevTodos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, isCompleted: !todo.isCompleted };
+        } else {
+          return todo;
+        }
+      });
+    });
+  };
+
+  const handleDeleteTodo = (id: string) => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -70,7 +86,11 @@ function App() {
             mt: 2,
           }}
         >
-          <TodoList todos={todos} />
+          <TodoList
+            todos={todos}
+            onToggleComplete={handleToggleTodo}
+            onDelete={handleDeleteTodo}
+          />
         </Box>
       </Box>
     </ThemeProvider>
